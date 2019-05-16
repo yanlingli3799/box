@@ -66,6 +66,7 @@ hs_err_pid*
 **/*.iml
 **/output/
 **/.idea/
+**/.idea/*
 **/.gradle/
 **/.DS_Store
 **/publish.sh
