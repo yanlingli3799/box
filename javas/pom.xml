@@ -12,6 +12,7 @@
     <module>jdks</module>
       <module>guices</module>
       <module>utils</module>
+      <module>algorithms</module>
   </modules>
 
   <name>javas</name>
