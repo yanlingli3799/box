@@ -13,6 +13,7 @@
       <module>guices</module>
       <module>utils</module>
       <module>algorithms</module>
+    <module>patterns</module>
   </modules>
 
   <name>javas</name>
