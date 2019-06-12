@@ -15,6 +15,7 @@
       <module>algorithms</module>
     <module>patterns</module>
     <module>iocs</module>
+    <module>thrifts</module>
   </modules>
 
   <name>javas</name>
