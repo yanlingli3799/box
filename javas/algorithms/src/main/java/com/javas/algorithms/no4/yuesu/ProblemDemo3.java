@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 第一题：(1.3.2.5.7）找到比左边大比右边小的数组下标，要求复杂度为n
+ * 例题3：(1.3.2.5.7）找到比左边大比右边小的数组下标，要求复杂度为n
  *
  * 分析：
  * - 所求数字，一定是某一个点的 "左边最大" && "右边最小"
  * - 这样的数字，可能不止一个
  */
-public class Problem1 {
+public class ProblemDemo3 {
 
   public static void main(String[] args) {
     System.out.println(find(new int[]{1, 3, 2, 5, 7}));
