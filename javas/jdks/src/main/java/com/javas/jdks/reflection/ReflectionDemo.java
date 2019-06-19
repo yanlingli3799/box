@@ -124,11 +124,15 @@ public class ReflectionDemo {
     Arrays.stream(clazz.getAnnotations()).forEach(ReflectionDemo::print);
     print(clazz.getAnnotation(Serialization.class));
 
-    printLine("5. 获取父类");
-    print(clazz.getSuperclass());
+    printLine("5. 是否是注解");
+    print(clazz.isAnnotation());
 
     printLine("6. 是否是接口");
     print(clazz.isInterface());
+
+    printLine("7. 获取父类");
+    print(clazz.getSuperclass());
+
 
   }
 
