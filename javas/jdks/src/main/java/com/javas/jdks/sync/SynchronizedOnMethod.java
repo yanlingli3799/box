@@ -7,6 +7,5 @@ public class SynchronizedOnMethod {
 
   private synchronized static void prints() {
     System.out.println("测试");
-    Thread
   }
 }
