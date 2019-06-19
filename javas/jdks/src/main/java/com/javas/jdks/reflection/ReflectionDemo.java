@@ -130,9 +130,14 @@ public class ReflectionDemo {
     printLine("6. 是否是接口");
     print(clazz.isInterface());
 
-    printLine("7. 获取父类");
-    print(clazz.getSuperclass());
+    printLine("7. 是否为java基类型");
+    print(clazz.isPrimitive());
 
+    printLine("8. 是否为数组");
+    print(clazz.isArray());
+
+    printLine("9. 获取父类");
+    print(clazz.getSuperclass());
 
   }
 
