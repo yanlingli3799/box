@@ -139,6 +139,9 @@ public class ReflectionDemo {
     printLine("9. 获取父类");
     print(clazz.getSuperclass());
 
+    printLine("10. 获取类加载器");
+    print(clazz.getClassLoader());
+
   }
 
 
