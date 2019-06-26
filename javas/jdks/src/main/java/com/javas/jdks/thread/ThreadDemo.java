@@ -27,40 +27,12 @@ public class ThreadDemo {
     test_range_4();
   }
 
-  static          AtomicInteger num  = new AtomicInteger(0);
-  static volatile boolean       flag = true;
-
-  private static void test_range_4() {
-
-    // 打印偶数
-    Thread A = new Thread(() -> {
-      while (100 > num.get()) {
-        if (flag && num.get() % 2 == 0) {
-          System.out.println(Thread.currentThread().getName() + " " + num.get());
-          num.getAndIncrement();
-          flag = false;
-        }
-      }
-    });
-
-    // 打印奇数
-    Thread B = new Thread(() -> {
-      while (100 > num.get()) {
-        if (!flag && num.get() % 2 != 0) {
-          System.out.println(Thread.currentThread().getName() + " " + num.get());
-          num.getAndIncrement();
-          flag = true;
-        }
-      }
-    });
-
-    A.start();
-    B.start();
-
-  }
 
 
-  // 预期：1和2交替输出，无顺序
+  /**
+   * demo1：线程各自执行不影响
+   * 预期：1和2交替输出，无顺序
+   */
   private static void test_range_1() {
 
     Thread A = new Thread(() -> {
@@ -79,11 +51,13 @@ public class ThreadDemo {
     A.start();
     B.start();
 
-
   }
 
 
-  // 预期：前面都是3，后面都是4
+  /**
+   * demo2：join 实现线程顺序执行
+   * 预期：前面都是3，后面都是4
+   */
   private static void test_range_2() throws InterruptedException {
     Thread A = new Thread(() -> {
       for (int i = 0; i < 1000; i++) {
@@ -105,8 +79,7 @@ public class ThreadDemo {
 
 
   /**
-   * synchronized 实现交替执行
-   * 两个线程，打印完自己
+   * demo3：synchronized 实现线程交替执行
    */
   private static void test_range_3() {
 
@@ -147,5 +120,40 @@ public class ThreadDemo {
     }
   }
 
+  /**
+   * demo4：CAS 实现线程交替执行
+   */
+
+  static          AtomicInteger num  = new AtomicInteger(0);
+  static volatile boolean       flag = true;
+
+  private static void test_range_4() {
+
+    // 打印偶数
+    Thread A = new Thread(() -> {
+      while (100 > num.get()) {
+        if (flag && num.get() % 2 == 0) {
+          System.out.println(Thread.currentThread().getName() + " " + num.get());
+          num.getAndIncrement();
+          flag = false;
+        }
+      }
+    });
+
+    // 打印奇数
+    Thread B = new Thread(() -> {
+      while (100 > num.get()) {
+        if (!flag && num.get() % 2 != 0) {
+          System.out.println(Thread.currentThread().getName() + " " + num.get());
+          num.getAndIncrement();
+          flag = true;
+        }
+      }
+    });
+
+    A.start();
+    B.start();
+
+  }
 
 }
