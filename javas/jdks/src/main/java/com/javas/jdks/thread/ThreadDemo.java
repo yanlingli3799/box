@@ -1,5 +1,7 @@
 package com.javas.jdks.thread;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class ThreadDemo {
 
   private static int x = 0;
@@ -18,46 +20,43 @@ public class ThreadDemo {
 
     System.out.println("---3. 交替执行（synchronized）");
     test_range_3();
+    Thread.sleep(1000);
+    System.out.println();
 
-
+    System.out.println("---4. 交替执行（CAS）");
+    test_range_4();
   }
 
-  // synchronized 实现交替执行
-  private static void test_range_3() {
+  static          AtomicInteger num  = new AtomicInteger(0);
+  static volatile boolean       flag = true;
 
-    final ThreadDemo demo = new ThreadDemo();
-    Thread t1 = new Thread(demo::print1);
-    Thread t2 = new Thread(demo::print2);
+  private static void test_range_4() {
 
-    t1.start();
-    t2.start();
-
-  }
-
-  private synchronized void print1() {
-    for (int i = 0; i <= 10; i += 2) {
-      System.out.println(Thread.currentThread().getName() + " " + i);
-      this.notify();
-      try {
-        if (i != 10) {
-          this.wait();
+    // 打印偶数
+    Thread A = new Thread(() -> {
+      while (100 > num.get()) {
+        if (flag && num.get() % 2 == 0) {
+          System.out.println(Thread.currentThread().getName() + " " + num.get());
+          num.getAndIncrement();
+          flag = false;
         }
-      } catch (InterruptedException ignored) {
       }
-    }
-  }
+    });
 
-  private synchronized void print2() {
-    for (int i = 1; i <= 10; i += 2) {
-      System.out.println(Thread.currentThread().getName() + " " + i);
-      this.notify();
-      try {
-        if (i != 9) {
-          this.wait();
+    // 打印奇数
+    Thread B = new Thread(() -> {
+      while (100 > num.get()) {
+        if (!flag && num.get() % 2 != 0) {
+          System.out.println(Thread.currentThread().getName() + " " + num.get());
+          num.getAndIncrement();
+          flag = true;
         }
-      } catch (InterruptedException ignored) {
       }
-    }
+    });
+
+    A.start();
+    B.start();
+
   }
 
 
@@ -102,6 +101,50 @@ public class ThreadDemo {
     A.join();
 
     B.start();
+  }
+
+
+  /**
+   * synchronized 实现交替执行
+   * 两个线程，打印完自己
+   */
+  private static void test_range_3() {
+
+    final ThreadDemo demo = new ThreadDemo();
+    Thread t1 = new Thread(demo::print1);
+    Thread t2 = new Thread(demo::print2);
+
+    t1.start();
+    t2.start();
+
+  }
+
+  // 打印偶数 0 2 4 6 ...
+  private synchronized void print1() {
+    for (int i = 0; i <= 10; i += 2) {
+      System.out.println(Thread.currentThread().getName() + " " + i);
+      this.notify();// 通知等待当前锁的进程继续执行
+      try {
+        if (i != 10) {
+          this.wait();// 若没到最后一个数，则
+        }
+      } catch (InterruptedException ignored) {
+      }
+    }
+  }
+
+  // 打印奇数 1 3 5 ...
+  private synchronized void print2() {
+    for (int i = 1; i <= 10; i += 2) {
+      System.out.println(Thread.currentThread().getName() + " " + i);
+      this.notify();
+      try {
+        if (i != 9) {
+          this.wait();
+        }
+      } catch (InterruptedException ignored) {
+      }
+    }
   }
 
 
