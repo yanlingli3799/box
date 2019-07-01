@@ -21,12 +21,36 @@ public class ThreadPoolExecutorDemo {
 
     ThreadPoolExecutor executor = new ThreadPoolExecutor(corePoolSize, maximumPoolSize, keepAliveTime, timeUnit, queue);
 
-    List<Future<Object>> results = executor.invokeAll(buildTaskList());
-    System.out.println("结果=" + results);
+    executor.execute(new Runnable() {
+      @Override
+      public void run() {
+        for (int i = 0; i < 1000; i++) {
+          System.out.print(i + "-");
+        }
+        System.out.println();
+      }
+    });
 
-    for (Future<Object> o : results) {
-      o.cancel(true);
-    }
+
+    Future<?> result = executor.submit(new Runnable() {
+      @Override
+      public void run() {
+        for (int i = 0; i < 1000; i++) {
+          System.out.print(i + ",");
+        }
+        System.out.println();
+      }
+    });
+
+    System.out.println("判断:result.isDone()="+result.isDone());
+
+
+//    List<Future<Object>> results = executor.invokeAll(buildTaskList());
+//    System.out.println("结果=" + results);
+//
+//    for (Future<Object> o : results) {
+//      o.cancel(true);
+//    }
     System.out.println("测试");
   }
 
@@ -35,7 +59,7 @@ public class ThreadPoolExecutorDemo {
     taskList.add(new Callable<Object>() {
       @Override
       public Object call() throws Exception {
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 10000000; i++) {
           System.out.print(i + "-");
         }
         System.out.println();
@@ -45,7 +69,7 @@ public class ThreadPoolExecutorDemo {
     taskList.add(new Callable<Object>() {
       @Override
       public Object call() throws Exception {
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 10000000; i++) {
           System.out.print(i + ".");
         }
         System.out.println();
