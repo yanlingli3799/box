@@ -1,11 +1,7 @@
 package com.javas.jdks.thread;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.Callable;
-import java.util.concurrent.Future;
-import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -13,72 +9,46 @@ public class ThreadPoolExecutorDemo {
 
   public static void main(String[] args) throws InterruptedException {
 
-    int corePoolSize = 30; // 核心线程池大小
-    int maximumPoolSize = 30; // 最大线程池大小
-    long keepAliveTime = 0; // 线程最大空闲时间
-    TimeUnit timeUnit = TimeUnit.MILLISECONDS; // 时间单位
-    BlockingQueue<Runnable> queue = new SynchronousQueue<Runnable>(true); // 阻塞队列
+    // TODO：BlockingQueue 阻塞队列的实现
+    ThreadPoolExecutor executor = new ThreadPoolExecutor(1, 2, 12, TimeUnit.MICROSECONDS, new LinkedBlockingDeque<>(3));
 
-    ThreadPoolExecutor executor = new ThreadPoolExecutor(corePoolSize, maximumPoolSize, keepAliveTime, timeUnit, queue);
+    System.out.println("---1. execute 执行 Runnable,不阻塞");
+    test1(executor);
+    Thread.sleep(1000);
+    System.out.println();
 
+    System.out.println("---2. execute 执行 Runnable,利用 CountDownLatch 阻塞等待线程全部执行完");
+    test2(executor);
+    Thread.sleep(1000);
+    System.out.println();
+
+    Thread.sleep(1000);
+    executor.shutdown();
+  }
+
+
+  private static void test1(ThreadPoolExecutor executor) throws InterruptedException {
     executor.execute(new Runnable() {
       @Override
       public void run() {
-        for (int i = 0; i < 1000; i++) {
-          System.out.print(i + "-");
-        }
-        System.out.println();
+        System.out.println("   123");
       }
     });
+    System.out.println("   这一行可能打印在123前面");
+  }
 
 
-    Future<?> result = executor.submit(new Runnable() {
+  private static void test2(ThreadPoolExecutor executor) throws InterruptedException {
+    CountDownLatch latch = new CountDownLatch(1);
+    executor.execute(new Runnable() {
       @Override
       public void run() {
-        for (int i = 0; i < 1000; i++) {
-          System.out.print(i + ",");
-        }
-        System.out.println();
+        System.out.println("   456");
+        latch.countDown();
       }
     });
-
-    System.out.println("判断:result.isDone()="+result.isDone());
-
-
-//    List<Future<Object>> results = executor.invokeAll(buildTaskList());
-//    System.out.println("结果=" + results);
-//
-//    for (Future<Object> o : results) {
-//      o.cancel(true);
-//    }
-    System.out.println("测试");
+    latch.await();
+    System.out.println("   这一行一定打印在456后面");
   }
-
-  private static List<Callable<Object>> buildTaskList() {
-    List<Callable<Object>> taskList = new ArrayList<Callable<Object>>(1);
-    taskList.add(new Callable<Object>() {
-      @Override
-      public Object call() throws Exception {
-        for (int i = 0; i < 10000000; i++) {
-          System.out.print(i + "-");
-        }
-        System.out.println();
-        return "ok";
-      }
-    });
-    taskList.add(new Callable<Object>() {
-      @Override
-      public Object call() throws Exception {
-        for (int i = 0; i < 10000000; i++) {
-          System.out.print(i + ".");
-        }
-        System.out.println();
-        return "ok";
-      }
-    });
-
-    return taskList;
-  }
-
 
 }

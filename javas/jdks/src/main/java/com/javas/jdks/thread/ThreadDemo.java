@@ -131,7 +131,7 @@ public class ThreadDemo {
 
     // 打印偶数
     Thread A = new Thread(() -> {
-      while (100 > num.get()) {
+      while (10 >= num.get()) {
         if (flag && num.get() % 2 == 0) {
           System.out.println(Thread.currentThread().getName() + " " + num.get());
           num.getAndIncrement();
@@ -142,7 +142,7 @@ public class ThreadDemo {
 
     // 打印奇数
     Thread B = new Thread(() -> {
-      while (100 > num.get()) {
+      while (10 >= num.get()) {
         if (!flag && num.get() % 2 != 0) {
           System.out.println(Thread.currentThread().getName() + " " + num.get());
           num.getAndIncrement();
