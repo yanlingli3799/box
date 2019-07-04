@@ -1,5 +1,7 @@
 package com.javas.jdks.thread;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
@@ -30,10 +32,14 @@ public class ThreadPoolExecutorDemo {
     Thread.sleep(1000);
     System.out.println();
 
+    System.out.println("---4. invokeAll 执行 Callable 列表,有返回值,invokeAll 内部 Future.get() 阻塞执行");
+    test4(executor);
 
     Thread.sleep(1000);
     executor.shutdown();
   }
+
+
 
 
   private static void test1(ThreadPoolExecutor executor) throws InterruptedException {
@@ -72,6 +78,26 @@ public class ThreadPoolExecutorDemo {
     Future<?> future = executor.submit(callable);
     System.out.println("   这一行可能打印在789前面");
     System.out.println("   阻塞读返回值"+future.get());
+  }
+
+  private static void test4(ThreadPoolExecutor executor) throws InterruptedException {
+    List<Callable<Object>> list = new ArrayList<Callable<Object>>(3);
+    list.add(new Callable<Object>() {
+      @Override
+      public Object call() throws Exception {
+        System.out.println("   aaa");
+        return "ok";
+      }
+    });
+    List<Future<Object>> futures = executor.invokeAll(list);
+    for (Future<Object> future : futures) {
+      try {
+        System.out.println("   返回值："+future.get());
+      } catch (Exception e) {
+        future.cancel(true);
+      }
+    }
+    System.out.println("   这一行一定在aaa和返回值之后");
   }
 
 }
