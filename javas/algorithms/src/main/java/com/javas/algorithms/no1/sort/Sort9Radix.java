@@ -76,7 +76,7 @@ public class Sort9Radix {
         counter[i]=0;// 要记得清零，不然下一趟会受影响
       }
 
-      System.out.println("LSD index="+index+",arr="+Arrays.toString(arr));
+//      System.out.println("LSD index="+index+",arr="+Arrays.toString(arr));
       index++; // 别忘了 index++
     }
 

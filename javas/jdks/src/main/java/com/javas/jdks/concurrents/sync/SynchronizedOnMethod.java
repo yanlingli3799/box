@@ -1,4 +1,4 @@
-package com.javas.jdks.sync;
+package com.javas.jdks.concurrents.sync;
 
 public class SynchronizedOnMethod {
   public static void main(String[] args){
