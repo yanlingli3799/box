@@ -62,7 +62,7 @@ public class ThreadPoolExecutorDemo {
         latch.countDown();
       }
     });
-    latch.await();
+    latch.await(10,TimeUnit.MILLISECONDS);
     System.out.println("   这一行一定打印在456后面");
   }
 

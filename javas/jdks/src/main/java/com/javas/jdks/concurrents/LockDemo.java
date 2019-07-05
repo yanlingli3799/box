@@ -1,6 +1,5 @@
 package com.javas.jdks.concurrents;
 
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class LockDemo extends Thread{
@@ -25,7 +24,7 @@ public class LockDemo extends Thread{
   }
 
 
-  public static void main(String[] args) throws ExecutionException, InterruptedException {
+  public static void main(String[] args) throws InterruptedException {
 
 
     LockDemo test1 = new LockDemo("thread1");

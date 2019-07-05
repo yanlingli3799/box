@@ -1,6 +1,5 @@
 package com.javas.jdks.concurrents;
 
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Semaphore;
 
 public class SemaphoreDemo extends Thread{
@@ -31,7 +30,7 @@ public class SemaphoreDemo extends Thread{
   }
 
 
-  public static void main(String[] args) throws ExecutionException, InterruptedException {
+  public static void main(String[] args) throws InterruptedException {
 
 
     SemaphoreDemo test1 = new SemaphoreDemo("thread1");
