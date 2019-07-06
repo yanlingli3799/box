@@ -2,8 +2,10 @@ package com.javas.jdks.concurrents.thread;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -62,7 +64,7 @@ public class ThreadPoolExecutorDemo {
         latch.countDown();
       }
     });
-    latch.await(10,TimeUnit.MILLISECONDS);
+    latch.await();
     System.out.println("   这一行一定打印在456后面");
   }
 
@@ -99,5 +101,7 @@ public class ThreadPoolExecutorDemo {
     }
     System.out.println("   这一行一定在aaa和返回值之后");
   }
+
+
 
 }
