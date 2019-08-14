@@ -38,7 +38,7 @@ public class IdGen1 {
 
 
   // {{yyyymmdd} 共8个字符} + { {12bit随机值 + 17bit秒数 + 5bit机器编号} 取前10个字符}
-  public static String genPrePayId(String yyyyMMdd) throws InterruptedException {
+  public static String genPrePayId(String yyyyMMdd) {
     long des = getCurrentMachineNo();
     long seconds = getCurrentSeconds();
     long range = getSerial();
@@ -48,7 +48,9 @@ public class IdGen1 {
     return yyyyMMdd + orderId;
   }
 
-  public static void main(String[] args) throws InterruptedException {
+  // ---------------------------------
+
+  public static void main(String[] args) {
     for (int i = 0; i < 20; i++) {
       String id = genPrePayId("20190901");
       System.out.println("id = " + id);

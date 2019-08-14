@@ -98,6 +98,10 @@ public class IdGen2 {
            | sequence;
   }
 
+
+
+  // -------------------------------------
+
   public static void main(String[] args) {
     long dataCenterId = 123;
     IdGen2 idGen = new IdGen2(dataCenterId, 12, 0, 0, 9);
