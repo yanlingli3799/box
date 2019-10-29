@@ -3,16 +3,10 @@ package com.demos.mysql1;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class MainStatement {
-
-  private static String url = "jdbc:mysql://localhost:3306/demos?useUnicode=true&characterEncoding=UTF-8&useSSL=true";
-  private static String username = "root";
-  private static String password = "root";
-  private static String driverName = "com.mysql.cj.jdbc.Driver";
 
   public static void main(String[] args) throws SQLException, ClassNotFoundException, InterruptedException {
 
@@ -60,11 +54,11 @@ public class MainStatement {
     String badSelectSql = String.format(selectSqlTmpl, badCardId);
 
     System.out.println("goodSelect 查询语句：" + goodSelectSql + "  ->  executeQuery结果(预期一条+是一条)：");
-    testSelect(goodSelectSql);
+    testExecuteQuery(goodSelectSql);
     Thread.sleep(1000);
 
     System.out.println("badSelect 查询语句：" + badSelectSql + "  ->  executeQuery结果(预期一条+是多条)：");
-    testSelect(badSelectSql);
+    testExecuteQuery(badSelectSql);
     Thread.sleep(1000);
 
     System.out.println("---------------------------------------------------");
@@ -79,16 +73,16 @@ public class MainStatement {
     String goodUpdateSql = String.format(updateSqlTmpl, "正常", goodCardId);
     String badUpdateSql = String.format(updateSqlTmpl, "异常", badCardId);
 
-    int goodUpdateResult = testUpdate(goodUpdateSql);
-    int badUpdateResult = testUpdate(badUpdateSql);
+    int goodUpdateResult = testExecuteUpdate(goodUpdateSql);
+    int badUpdateResult = testExecuteUpdate(badUpdateSql);
     System.out.println("goodUpdate 更新语句：" + goodSelectSql + "  ->  executeUpdate返回值：" + goodUpdateResult);
     System.out.println("查询全表确认：");
-    testSelect(selectAll);
+    testExecuteQuery(selectAll);
     Thread.sleep(1000);
 
     System.out.println("badUpdate 更新语句：" + goodSelectSql + "  ->  executeUpdate返回值：" + badUpdateResult);
     System.out.println("查询全表确认：");
-    testSelect(selectAll);
+    testExecuteQuery(selectAll);
     Thread.sleep(1000);
 
     System.out.println("---------------------------------------------------");
@@ -106,12 +100,12 @@ public class MainStatement {
 
     System.out.println("goodDeleteSql 删除语句："+goodDeleteSql + " -> execute返回值："+testExecute(goodDeleteSql));
     System.out.println("查询全表确认：");
-    testSelect(selectAll);
+    testExecuteQuery(selectAll);
     Thread.sleep(1000);
 
     System.out.println("badDelete 删除语句："+badDeleteSql + " -> execute返回值："+testExecute(badDeleteSql));
     System.out.println("查询全表确认：");
-    testSelect(selectAll);
+    testExecuteQuery(selectAll);
     Thread.sleep(1000);
 
     System.out.println("---------------------------------------------------");
@@ -126,13 +120,12 @@ public class MainStatement {
 
 
   // Statement 通过 executeQuery 方法执行 sql 语句
-  private static void testSelect(String sql) throws SQLException, ClassNotFoundException {
-    Connection connection = null;
-    Class.forName(driverName);
-    connection = DriverManager.getConnection(url, username, password);
+  private static void testExecuteQuery(String sql) throws SQLException, ClassNotFoundException {
+    Class.forName(CommonUtil.driverName);
+    Connection connection = DriverManager.getConnection(CommonUtil.url, CommonUtil.username, CommonUtil.password);
     Statement statement = connection.createStatement();
     ResultSet resultSet = statement.executeQuery(sql);
-    printResultSet(resultSet);
+    CommonUtil.printResultSet(resultSet);
     resultSet.close();
     statement.close();
     connection.close();
@@ -140,10 +133,9 @@ public class MainStatement {
 
 
   // Statement 通过 executeUpdate 方法执行 sql 语句
-  private static int testUpdate(String sql) throws SQLException, ClassNotFoundException {
-    Connection connection = null;
-    Class.forName(driverName);
-    connection = DriverManager.getConnection(url, username, password);
+  private static int testExecuteUpdate(String sql) throws SQLException, ClassNotFoundException {
+    Class.forName(CommonUtil.driverName);
+    Connection connection = DriverManager.getConnection(CommonUtil.url, CommonUtil.username, CommonUtil.password);
     Statement statement = connection.createStatement();
     int result = statement.executeUpdate(sql);
     statement.close();
@@ -153,9 +145,8 @@ public class MainStatement {
 
   // Statement 通过 execute 方法执行 sql 语句
   private static boolean testExecute(String sql) throws SQLException, ClassNotFoundException {
-    Connection connection = null;
-    Class.forName(driverName);
-    connection = DriverManager.getConnection(url, username, password);
+    Class.forName(CommonUtil.driverName);
+    Connection connection = DriverManager.getConnection(CommonUtil.url, CommonUtil.username, CommonUtil.password);
     Statement statement = connection.createStatement();
     boolean result = statement.execute(sql);
     statement.close();
@@ -163,22 +154,5 @@ public class MainStatement {
     return result;
   }
 
-
-  // 打印查询结果集，必须在 connection 关闭之前打印
-  private static void printResultSet(ResultSet resultSet) throws SQLException {
-    System.out.println();
-    ResultSetMetaData meta_data = resultSet.getMetaData();//列名
-    for (int i_col = 1; i_col <= meta_data.getColumnCount(); i_col++) {
-      System.out.print("    "+meta_data.getColumnLabel(i_col) + "\t");
-    }
-    System.out.println();
-    while (resultSet.next()) {
-      for (int i_col = 1; i_col <= meta_data.getColumnCount(); i_col++) {
-        System.out.print("    "+resultSet.getString(i_col) + "\t");
-      }
-      System.out.println();
-    }
-    System.out.println();
-  }
 
 }
