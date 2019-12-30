@@ -67,8 +67,8 @@ buildNumber.properties
 **/gen-java
 **/.classpath
 **/.project
-**/target/
 **/out/
+**/output/
 **/.settings/
 **/coverage-report/
 **/metadata/

@@ -10,6 +10,7 @@
   <version>1.0-SNAPSHOT</version>
   <modules>
     <module>mysql1</module>
+    <module>log1</module>
   </modules>
 
   <name>demos</name>
