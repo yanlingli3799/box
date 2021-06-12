@@ -21,7 +21,7 @@
         <log4j2.version>2.7</log4j2.version>
         <slf4j-simple.version>1.7.21</slf4j-simple.version>
         <mysql-connector-java.version>6.0.6</mysql-connector-java.version>
-        <junit.version>4.11</junit.version>
+        <junit.version>4.13.1</junit.version>
     </properties>
 
 
