@@ -10,12 +10,13 @@
   <version>1.0-SNAPSHOT</version>
   <modules>
     <module>jdks</module>
-      <module>guices</module>
-      <module>utils</module>
-      <module>algorithms</module>
+    <module>guices</module>
+    <module>utils</module>
+    <module>algorithms</module>
     <module>patterns</module>
     <module>iocs</module>
     <module>thrifts</module>
+    <module>java8</module>
   </modules>
 
   <name>javas</name>
